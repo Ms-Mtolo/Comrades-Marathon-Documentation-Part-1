@@ -1,0 +1,19 @@
+The six entities
+
+1. Users
+One table for everyone — Organisers, Participants, and Admins — distinguished by the Role column. This is a common pattern for auth systems: one login table, one Users.Role field, instead of separate tables for each type of person. It's what your /api/auth/register and /api/auth/login endpoints work against.
+
+2. Events
+An event like the "Johannesburg City Run." Each event belongs to exactly one Organiser (OrganiserID is a foreign key back to Users). This is where EventDate, Location, and RegistrationDeadline live — the details a Participant sees when browsing.
+
+3. Categories
+The distances/divisions within an event — e.g. "5km Fun Run" or "Half Marathon." Each category belongs to one event. This is what lets an event like Comrades have multiple "editions" of entry (novice vs seeded runner categories, for example) under one umbrella event.
+
+4. Enrolments
+This is the important one — it's the bridge table that makes the many-to-many relationship work. A Participant (from Users) can enrol in many categories, and a category can have many participants enrolled. Neither Users nor Categories can express that relationship directly, so Enrolments sits between them, holding both foreign keys (ParticipantID, CategoryID) plus enrolment-specific data like Status and PaymentStatus.
+
+5. Results
+Tied to a specific enrolment (not directly to a user or category) — because a result only makes sense in the context of "this particular person's entry into this particular category." That's why it's a 1 : 0..1 relationship off Enrolments: one enrolment can have at most one result (they either finished with a time, or didn't finish, or were disqualified).
+
+6. Payments
+Same pattern as Results — tied to the enrolment, not the user directly, since payment is for a specific race entry, not a general account balance.
