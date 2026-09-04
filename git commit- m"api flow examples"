@@ -1,0 +1,28 @@
+API Flow Examples
+Complete User Journey
+Register (/api/auth/signin)
+
+Login (/api/auth/login)
+
+Browse Events (/api/events)
+
+View Event Details (/api/events/{id})
+
+Enroll in Event (/api/events/{eventId}/enrol)
+
+View Enrollments (/api/users/enrolments)
+
+View Results (/api/events/{eventId}/results)
+
+Organizer Workflow
+Login with organizer account
+
+Create Event (/api/events)
+
+Add Categories (/api/events/{eventId}/categories)
+
+View Enrollments (/api/events/{eventId}/enrolments)
+
+Record Results (/api/enrolments/{id}/result)
+
+View Dashboard (/api/dashboard/organiser)
