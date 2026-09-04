@@ -1,0 +1,19 @@
+Relationships (and explanation for each)
+
+User to Event — 1 organizes *
+One organizer can create many events, one event can be created only by one organizer – it’s typical one-to-many. Relationship is established through OrganizerId foreign key in Events.
+
+Event to Category — 1 has *
+One event can belong to many categories (like 5km, 10km, half-marathon in the same event). Again, it’s one-to-many relationship, established through EventId foreign key in Categories.
+
+User to Enrollments and Category to Enrollments – this is many-to-many
+Participant can enroll to many categories, while one category can be enrolled to by many participants. So neither one side can refer to the other and we need junction/bridge table – Enrollments, which stores ParticipantId and CategoryId as foreign keys. It’s a typical approach to represent many-to-many relation in relational databases, because one can’t add many foreign keys from one table into another.
+Enrolments → Results — 1 0..1
+There can be no more than one result per enrolment since one cannot register and already have a result for a particular race (a result does not always exist, since the race has not been completed). There cannot be more than one result since one is only issued once during the completion of the race and never twice for the same entry.
+
+Enrolments → Payments — 1 0..1
+The same is true of payments: one per enrolment and the payment may not exist if there has not been any yet.
+
+Why Results and Payments are connected to Enrolments, not Users/Categories
+
+It is at this point where things get complicated. The result of participation in a race is "Sipho's result" only in connection with a specific race, not just by itself. If Sipho participates in two races, he will need two entries of his results – one per enrolment and not per user (the same is true of payments).
