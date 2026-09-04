@@ -1,0 +1,103 @@
+Authentication
+HTTP Method	Route	Description	Role Required	Request Body	Expected Response
+POST	/api/auth/login	Authenticate user and return JWT token.	None (Public)	{ "email": "string", "password": "string" }	HTTP CODE :
+200 OK - Token + user info
+POST	/api/auth/signin	User Signs in if they don’t have an account, using their name, email and password.	None (Public)	{ "firstName": "string", "email": "string", "password": "string", "confirmPassword": "string" }	HTTP CODE :
+201 Created - User object with token
+
+	
+User Accounts
+
+GET	/api/users/email	Get current authenticated user's profile.	Any (Logged in)	None	HTTP CODE :
+200 OK - User profile object
+PUT	/api/users/profile	It will update current user's profile.	Any (Logged in)	{ "firstName": "string", "email": "string", "password": "string" }	HTTP CODE :
+200 OK - Updated user object
+GET	/api/users/{id}	It will get the users public profile.	Any (Logged in)	None	HTTP CODE :
+200 OK - User public profile
+GET	/api/users	It will list all users on the admins side.	Admin	None	HTTP CODE :
+200 OK - Array of users
+	 
+Events
+GET	/api/events	Events will be listed with an option to filter(date, location, etc)	None (Public)	None	HTTP CODE :
+200 OK - Array of events with pagination
+GET	/api/events/{id}	It will get specific details on the event.	None (Public)	None	HTTP CODE :
+200 OK - Event details with categories
+POST	/api/events	Creates a new event.	Organiser	{ "title": "string", "description": "string", "date": "ISO date", "location": "string", "status": "string" }	HTTP CODE :
+201 Created - New event object
+PUT	/api/events/{id}	Updates an existing event.	Organiser (owner only)	{ "title": "string", "description": "string", "date": "ISO date", "location": "string", "status": "string" }	HTTP CODE :
+200 OK - Updated event
+DELETE	/api/events/{id}	Deletes an event.	Organiser (owner only)	None	HTTP CODE :
+204 No Content - Deleted
+
+
+
+
+
+
+
+
+Categories
+GET	/api/events/{eventId}/categories	It will get all the categories for an event.	None (Public)	None	HTTP CODE :
+200 OK - Array of categories
+404 Not Found - Event not found
+POST	/api/events/{eventId}/categories	It will add a new category for a specific event.	Organiser	{ "firstName": "string", "description": "string", "distance": "number", "ageGroup": "string", "price": "number" }	HTTP CODE :
+201 Created - New category
+PUT	/api/categories/{id}	Updates a category.	Organiser	{ "name": "string", "description": "string", "distance": "number", "ageGroup": "string", "price": "number" }	HTTP CODE :
+200 OK - Updated category
+DELETE	/api/categories/{id}	Deletes a category.	Organiser	None	HTTP CODE :
+204 No Content - Deleted
+					
+
+
+
+
+
+
+Enrolment
+GET	/api/events/{eventId}/enrolments	It will get all the enrolments of the event.	Organiser	None	HTTP CODE :
+200 OK - Array of enrolments
+POST	/api/events/{eventId}/enrol	Enrols a participant in an event	Any (Logged in)	{ "categoryId": "number" }	HTTP CODE :
+201 Created - Enrolment details
+400 Bad Request - Already enrolled
+404 Not Found - Event/category not found
+GET	/api/users/enrolments	Gets current user's enrolments.	Any (Logged in)	None	HTTP CODE :
+200 OK - Array of user's enrolments
+PUT	/api/enrolments/{id}	Updates enrolment status.	Participant or Organiser	{ "status": "string" }	HTTP CODE :
+200 OK - Updated enrolment
+403 Forbidden - Not owner
+404 Not Found - Enrolment not found
+DELETE	/api/enrolments/{id}	Cancels enrolment	Participant or Organiser	None	HTTP CODE :
+204 No Content - Cancelled
+403 Forbidden - Not owner
+404 Not Found - Enrolment not found
+
+
+
+
+Results
+GET	/api/events/{eventId}/results	It gets all results for an event.	None (Public)	None	HTTP CODE :
+200 OK - Array of results with participant names
+GET	/api/enrolments/{id}/result	It gets results for a specific enrolment.	Participant or Organiser	None	HTTP CODE :
+200 OK - Result object
+404 Not Found - Result not found
+POST	/api/enrolments/{id}/result	Add/record result for an enrolment.	Organiser	{ "finishTime": "ISO duration", "position": "number", "status": "string" }	HTTP CODE :
+201 Created - New result
+404 Not Found - Enrolment not found
+PUT	/api/results/{id}	Update an existing result.	Organiser	{ "finishTime": "ISO duration", "position": "number", "status": "string" }	HTTP CODE :
+200 OK - Updated result
+403 Forbidden - Not organiser
+404 Not Found - Result not found
+DELETE	/api/results/{id}	Deletes a result.	Organiser	None	HTTP CODE :
+204 No Content - Deleted
+403 Forbidden - Not organiser
+404 Not Found - Result not found
+
+
+
+
+
+Payment
+GET	/api/payment/admin	Gets users payment	Admin	None	HTTP CODE :
+200 OK – Status 
+GET	/api/payment/participant	Gets participant's total payment	None 	None	HTTP CODE :
+200 OK – total process
