@@ -1,0 +1,11 @@
+Security Considerations
+JWT Token Expiration: Tokens expire after a configurable time
+
+Password Hashing: Passwords are hashed using BCrypt
+
+Input Validation: All inputs are validated to prevent SQL injection
+
+CORS: Configured to allow only specific origins
+
+HTTPS: Enforced in production environments
+
